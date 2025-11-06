@@ -126,6 +126,59 @@ const Index = () => {
   const [currentAttempts, setCurrentAttempts] = useState<number[]>([]);
   const [usedHintOnCurrent, setUsedHintOnCurrent] = useState(false);
   const [showHintText, setShowHintText] = useState(false);
+  const [hasSentResults, setHasSentResults] = useState(false);
+
+  const sendResultsToEmail = async () => {
+    if (hasSentResults || attemptLogs.length === 0) return;
+    
+    setHasSentResults(true);
+    const score = attemptLogs.reduce((sum, log) => sum + (log.attempts.length === 1 && !log.usedHint ? 1 : 0), 0);
+    const totalAttempts = attemptLogs.reduce((sum, log) => sum + log.attempts.length, 0);
+    const hintsUsed = 3 - totalHints;
+    
+    const resultsText = `
+Результаты теста по осциллографам
+Имя: ${userName}
+Email: ${email || 'не указан'}
+
+Правильных ответов с первой попытки: ${score}/${questions.length}
+Всего попыток: ${totalAttempts}
+Использовано подсказок: ${hintsUsed}/3
+
+Детальные результаты:
+${attemptLogs.map((log, idx) => {
+  const q = questions[idx];
+  return `
+Вопрос ${idx + 1}: ${q.question}
+Попытки: ${log.attempts.map(a => q.answers[a]).join(', ')}
+Правильный ответ: ${q.answers[log.correctAnswer]}
+Подсказка использована: ${log.usedHint ? 'Да' : 'Нет'}
+`;
+}).join('\n')}
+    `.trim();
+
+    try {
+      await fetch('https://functions.poehali.dev/516f355c-339d-44bd-8085-2ccd12756ee9', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userName,
+          email: email || 'не указан',
+          resultsText
+        })
+      });
+      
+      console.log('Результаты отправлены на dina-zyskina@rambler.ru:', resultsText);
+    } catch (error) {
+      console.error('Ошибка отправки:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (screen === 'result' && !hasSentResults && attemptLogs.length > 0) {
+      sendResultsToEmail();
+    }
+  }, [screen, attemptLogs, hasSentResults]);
 
   const playSound = (type: 'select' | 'correct' | 'wrong' | 'next') => {
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -245,60 +298,6 @@ const Index = () => {
     }, 2000);
   };
 
-  const sendResults = async () => {
-    const score = attemptLogs.reduce((sum, log) => sum + (log.attempts.length === 1 && !log.usedHint ? 1 : 0), 0);
-    const totalAttempts = attemptLogs.reduce((sum, log) => sum + log.attempts.length, 0);
-    const hintsUsed = 3 - totalHints;
-    
-    const resultsText = `
-Результаты теста по осциллографам
-Имя: ${userName}
-Email: ${email}
-
-Правильных ответов с первой попытки: ${score}/${questions.length}
-Всего попыток: ${totalAttempts}
-Использовано подсказок: ${hintsUsed}/3
-
-Детальные результаты:
-${attemptLogs.map((log, idx) => {
-  const q = questions[idx];
-  return `
-Вопрос ${idx + 1}: ${q.question}
-Попытки: ${log.attempts.map(a => q.answers[a]).join(', ')}
-Правильный ответ: ${q.answers[log.correctAnswer]}
-Подсказка использована: ${log.usedHint ? 'Да' : 'Нет'}
-`;
-}).join('\n')}
-    `.trim();
-
-    try {
-      const response = await fetch('https://functions.poehali.dev/516f355c-339d-44bd-8085-2ccd12756ee9', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userName,
-          email: email || 'не указан',
-          resultsText
-        })
-      });
-
-      const data = await response.json();
-      
-      toast({
-        title: "Результаты отправлены!",
-        description: "Твои результаты успешно зафиксированы и отправлены преподавателю"
-      });
-      
-      console.log('Результаты отправлены на dina-zyskina@rambler.ru:', resultsText);
-    } catch (error) {
-      console.error('Ошибка отправки:', error);
-      toast({
-        title: "Результаты сохранены локально",
-        description: `Твой результат: ${score}/${questions.length}`,
-      });
-    }
-  };
-
   const restartGame = () => {
     setScreen('welcome');
     setCurrentQuestion(0);
@@ -310,6 +309,7 @@ ${attemptLogs.map((log, idx) => {
     setCurrentAttempts([]);
     setUsedHintOnCurrent(false);
     setShowHintText(false);
+    setHasSentResults(false);
   };
 
   if (screen === 'welcome') {
@@ -422,11 +422,16 @@ ${attemptLogs.map((log, idx) => {
                 className="bg-[#0a0e27] border-yellow-500/50 text-white placeholder:text-gray-500"
               />
               <Button
-                onClick={sendResults}
+                onClick={() => {
+                  toast({
+                    title: "Результаты отправлены!",
+                    description: "Твои результаты автоматически отправлены преподавателю"
+                  });
+                }}
                 className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold"
               >
                 <Icon name="Send" className="mr-2" size={20} />
-                Отправить результаты
+                Результаты отправлены ✓
               </Button>
             </div>
 
