@@ -1,0 +1,26 @@
+{
+  "tests": [
+    {
+      "name": "Send quiz results",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "userName": "Test User",
+        "email": "test@example.com",
+        "resultsText": "Test results"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "message": "string"
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Handle OPTIONS for CORS",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    }
+  ]
+}

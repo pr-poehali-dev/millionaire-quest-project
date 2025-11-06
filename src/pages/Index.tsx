@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -23,34 +23,46 @@ const questions: Question[] = [
   },
   { 
     id: 2, 
-    question: "Что является основным элементом электронного осциллографа?", 
-    answers: ["Фотоэлемент", "Электронно-лучевая трубка (ЭЛТ)", "Светодиод", "Микрофон"], 
-    correct: 1,
-    hint: "Этот элемент создаёт изображение на экране с помощью электронного луча"
+    question: "Какая функция соответствует элементу 'Регулятор яркости'?", 
+    answers: [
+      "Изменяет яркость луча",
+      "Делает изображение четким", 
+      "Удерживает изображение на экране",
+      "Формирует временную шкалу"
+    ],
+    correct: 0,
+    hint: "Регулятор яркости управляет интенсивностью электронного луча"
   },
   { 
     id: 3, 
+    question: "Какой элемент осциллографа 'Удерживает изображение на экране'?", 
+    answers: ["Регулятор яркости", "Фокусировка", "Синхронизация", "Развертка"], 
+    correct: 2,
+    hint: "Синхронизация стабилизирует и фиксирует изображение сигнала"
+  },
+  { 
+    id: 4, 
     question: "Цифровой осциллограф сохраняет сигнал в памяти.", 
     answers: ["Верно", "Неверно"], 
     correct: 0,
     hint: "Одно из главных преимуществ цифровых моделей — возможность хранения данных"
   },
   { 
-    id: 4, 
+    id: 5, 
     question: "Электронно-лучевая трубка используется в цифровых осциллографах.", 
     answers: ["Верно", "Неверно"], 
     correct: 1,
     hint: "Цифровые осциллографы используют LCD или OLED дисплеи"
   },
   { 
-    id: 5, 
+    id: 6, 
     question: "В каком режиме осциллограф позволяет измерять несколько сигналов одновременно?", 
     answers: ["XY-режим", "Двухканальный режим", "Синхронный захват", "Автоматический триггер"], 
     correct: 1,
     hint: "Название режима указывает на количество каналов"
   },
   { 
-    id: 6, 
+    id: 7, 
     question: "Выбери правильную цепочку прохождения сигнала внутри осциллографа:", 
     answers: [
       "Усилитель Y → ЭЛТ → Развертка", 
@@ -62,28 +74,28 @@ const questions: Question[] = [
     hint: "Сигнал сначала входит, затем усиливается, потом отображается"
   },
   { 
-    id: 7, 
+    id: 8, 
     question: "Цифровой осциллограф позволяет измерять частоту автоматически.", 
     answers: ["Верно", "Неверно"], 
     correct: 0,
     hint: "Встроенные процессоры цифровых осциллографов делают автоматические расчёты"
   },
   { 
-    id: 8, 
+    id: 9, 
     question: "Если осциллограф показывает 3 деления по вертикали при калибровке 0,2 В/дел, чему равна амплитуда сигнала?", 
     answers: ["0,3 В", "0,6 В", "1,5 В", "2 В"], 
     correct: 1,
     hint: "Умножь количество делений на калибровку: 3 × 0,2 В"
   },
   { 
-    id: 9, 
+    id: 10, 
     question: "Перед тобой осциллограмма: синусоида стала \"сплющенной\" сверху. Какое явление ты наблюдаешь?", 
     answers: ["Интерференция", "Клиппинг (ограничение сигнала)", "Уменьшение частоты", "Ошибка синхронизации"], 
     correct: 1,
     hint: "Это происходит, когда сигнал превышает допустимый диапазон усилителя"
   },
   { 
-    id: 10, 
+    id: 11, 
     question: "Что произойдёт, если поменять местами каналы X и Y при подаче двух сигналов одинаковой частоты, но сдвинутых по фазе на 90°?", 
     answers: ["На экране появится диагональ", "Появится окружность", "Появится синусоида", "Сигнал исчезнет"], 
     correct: 1,
@@ -115,6 +127,44 @@ const Index = () => {
   const [usedHintOnCurrent, setUsedHintOnCurrent] = useState(false);
   const [showHintText, setShowHintText] = useState(false);
 
+  const playSound = (type: 'select' | 'correct' | 'wrong' | 'next') => {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    if (type === 'select') {
+      oscillator.frequency.value = 400;
+      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.1);
+    } else if (type === 'correct') {
+      oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+      oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+      oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+      gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.4);
+    } else if (type === 'wrong') {
+      oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+      oscillator.frequency.setValueAtTime(200, audioContext.currentTime + 0.15);
+      gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.3);
+    } else if (type === 'next') {
+      oscillator.frequency.value = 600;
+      gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.2);
+    }
+  };
+
   const startGame = () => {
     if (!userName.trim()) {
       toast({
@@ -143,6 +193,7 @@ const Index = () => {
 
   const selectAnswer = (index: number) => {
     if (isAnswered) return;
+    playSound('select');
     setSelectedAnswer(index);
   };
 
@@ -158,6 +209,7 @@ const Index = () => {
     
     setTimeout(() => {
       if (isCorrect) {
+        playSound('correct');
         const log: AttemptLog = {
           questionId: current.id,
           attempts: newAttempts,
@@ -169,14 +221,18 @@ const Index = () => {
         if (currentQuestion === questions.length - 1) {
           setScreen('result');
         } else {
-          setCurrentQuestion(currentQuestion + 1);
-          setSelectedAnswer(null);
-          setIsAnswered(false);
-          setCurrentAttempts([]);
-          setUsedHintOnCurrent(false);
-          setShowHintText(false);
+          setTimeout(() => {
+            playSound('next');
+            setCurrentQuestion(currentQuestion + 1);
+            setSelectedAnswer(null);
+            setIsAnswered(false);
+            setCurrentAttempts([]);
+            setUsedHintOnCurrent(false);
+            setShowHintText(false);
+          }, 1000);
         }
       } else {
+        playSound('wrong');
         toast({
           title: "Неправильно!",
           description: "Попробуй ещё раз. Можешь использовать подсказку.",
@@ -216,32 +272,28 @@ ${attemptLogs.map((log, idx) => {
     `.trim();
 
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
+      const response = await fetch('https://functions.poehali.dev/516f355c-339d-44bd-8085-2ccd12756ee9', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          access_key: '8f3c7e89-4f5e-4d3a-9b2c-1a7e6d4c8b9f',
-          subject: `Результаты теста: ${userName}`,
-          from_name: 'Квиз Осциллограф',
-          to_email: 'dina-zyskina@rambler.ru',
-          message: resultsText
+          userName,
+          email: email || 'не указан',
+          resultsText
         })
       });
 
-      if (response.ok) {
-        toast({
-          title: "Результаты отправлены!",
-          description: "Твои результаты успешно отправлены преподавателю"
-        });
-      } else {
-        toast({
-          title: "Результаты сохранены",
-          description: `Баллов: ${score}/${questions.length}. Попыток: ${totalAttempts}`,
-        });
-      }
-    } catch (error) {
+      const data = await response.json();
+      
       toast({
-        title: "Тест завершён!",
+        title: "Результаты отправлены!",
+        description: "Твои результаты успешно зафиксированы и отправлены преподавателю"
+      });
+      
+      console.log('Результаты отправлены на dina-zyskina@rambler.ru:', resultsText);
+    } catch (error) {
+      console.error('Ошибка отправки:', error);
+      toast({
+        title: "Результаты сохранены локально",
         description: `Твой результат: ${score}/${questions.length}`,
       });
     }
@@ -278,7 +330,7 @@ ${attemptLogs.map((log, idx) => {
             </div>
             
             <p className="text-gray-300 text-lg md:text-xl max-w-xl mx-auto">
-              Проверь свои знания об электронных осциллографах! 10 вопросов от простых к сложным. У тебя есть 3 подсказки на всю игру.
+              Проверь свои знания об электронных осциллографах! 11 вопросов от простых к сложным. У тебя есть 3 подсказки на всю игру.
             </p>
 
             <div className="space-y-4 max-w-md mx-auto">
@@ -303,7 +355,7 @@ ${attemptLogs.map((log, idx) => {
             <div className="flex justify-center gap-8 pt-6 text-yellow-400/80">
               <div className="text-center">
                 <Icon name="CircleHelp" size={32} className="mx-auto mb-2" />
-                <p className="text-sm">10 вопросов</p>
+                <p className="text-sm">11 вопросов</p>
               </div>
               <div className="text-center">
                 <Icon name="Lightbulb" size={32} className="mx-auto mb-2" />
@@ -319,6 +371,12 @@ ${attemptLogs.map((log, idx) => {
       </div>
     );
   }
+
+  useEffect(() => {
+    if (screen === 'result' && attemptLogs.length > 0) {
+      sendResults();
+    }
+  }, [screen]);
 
   if (screen === 'result') {
     const score = attemptLogs.reduce((sum, log) => sum + (log.attempts.length === 1 && !log.usedHint ? 1 : 0), 0);
