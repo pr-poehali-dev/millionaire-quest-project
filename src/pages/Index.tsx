@@ -10,32 +10,93 @@ interface Question {
   question: string;
   answers: string[];
   correct: number;
-  prize: string;
+  hint?: string;
 }
 
 const questions: Question[] = [
-  { id: 1, question: "Какой город является столицей России?", answers: ["Москва", "Санкт-Петербург", "Казань", "Новосибирск"], correct: 0, prize: "500 ₽" },
-  { id: 2, question: "Сколько планет в Солнечной системе?", answers: ["7", "8", "9", "10"], correct: 1, prize: "1 000 ₽" },
-  { id: 3, question: "Кто написал роман 'Война и мир'?", answers: ["Достоевский", "Пушкин", "Толстой", "Чехов"], correct: 2, prize: "2 000 ₽" },
-  { id: 4, question: "В каком году началась Вторая мировая война?", answers: ["1939", "1941", "1945", "1937"], correct: 0, prize: "3 000 ₽" },
-  { id: 5, question: "Какой элемент имеет химический символ 'O'?", answers: ["Золото", "Кислород", "Водород", "Железо"], correct: 1, prize: "5 000 ₽" },
-  { id: 6, question: "Какая самая большая пустыня в мире?", answers: ["Сахара", "Гоби", "Антарктида", "Атакама"], correct: 2, prize: "10 000 ₽" },
-  { id: 7, question: "Кто изобрел телефон?", answers: ["Эдисон", "Белл", "Тесла", "Маркони"], correct: 1, prize: "15 000 ₽" },
-  { id: 8, question: "Какая планета самая большая в Солнечной системе?", answers: ["Марс", "Сатурн", "Юпитер", "Нептун"], correct: 2, prize: "25 000 ₽" },
-  { id: 9, question: "Сколько костей в теле взрослого человека?", answers: ["186", "206", "226", "246"], correct: 1, prize: "50 000 ₽" },
-  { id: 10, question: "В каком году был основан Google?", answers: ["1996", "1998", "2000", "2002"], correct: 1, prize: "100 000 ₽" },
-  { id: 11, question: "Какой океан самый большой?", answers: ["Атлантический", "Индийский", "Тихий", "Северный Ледовитый"], correct: 2, prize: "200 000 ₽" },
-  { id: 12, question: "Кто написал 'Мастер и Маргарита'?", answers: ["Булгаков", "Пастернак", "Набоков", "Замятин"], correct: 0, prize: "400 000 ₽" },
-  { id: 13, question: "Какая страна подарила США Статую Свободы?", answers: ["Великобритания", "Франция", "Испания", "Италия"], correct: 1, prize: "800 000 ₽" },
-  { id: 14, question: "Сколько струн у классической гитары?", answers: ["4", "5", "6", "7"], correct: 2, prize: "1 500 000 ₽" },
-  { id: 15, question: "В каком году человек впервые высадился на Луну?", answers: ["1965", "1967", "1969", "1971"], correct: 2, prize: "3 000 000 ₽" }
+  { 
+    id: 1, 
+    question: "Какую функцию выполняет осциллограф?", 
+    answers: ["Измеряет силу тока", "Измеряет форму и параметры сигнала", "Определяет мощность", "Измеряет сопротивление"], 
+    correct: 1,
+    hint: "Осциллограф визуализирует электрические сигналы во времени"
+  },
+  { 
+    id: 2, 
+    question: "Что является основным элементом электронного осциллографа?", 
+    answers: ["Фотоэлемент", "Электронно-лучевая трубка (ЭЛТ)", "Светодиод", "Микрофон"], 
+    correct: 1,
+    hint: "Этот элемент создаёт изображение на экране с помощью электронного луча"
+  },
+  { 
+    id: 3, 
+    question: "Цифровой осциллограф сохраняет сигнал в памяти.", 
+    answers: ["Верно", "Неверно"], 
+    correct: 0,
+    hint: "Одно из главных преимуществ цифровых моделей — возможность хранения данных"
+  },
+  { 
+    id: 4, 
+    question: "Электронно-лучевая трубка используется в цифровых осциллографах.", 
+    answers: ["Верно", "Неверно"], 
+    correct: 1,
+    hint: "Цифровые осциллографы используют LCD или OLED дисплеи"
+  },
+  { 
+    id: 5, 
+    question: "В каком режиме осциллограф позволяет измерять несколько сигналов одновременно?", 
+    answers: ["XY-режим", "Двухканальный режим", "Синхронный захват", "Автоматический триггер"], 
+    correct: 1,
+    hint: "Название режима указывает на количество каналов"
+  },
+  { 
+    id: 6, 
+    question: "Выбери правильную цепочку прохождения сигнала внутри осциллографа:", 
+    answers: [
+      "Усилитель Y → ЭЛТ → Развертка", 
+      "Вход → Усилитель Y → Электронно-лучевая трубка", 
+      "Развертка → Вход → Синхронизация", 
+      "Блок питания → Усилитель X"
+    ], 
+    correct: 1,
+    hint: "Сигнал сначала входит, затем усиливается, потом отображается"
+  },
+  { 
+    id: 7, 
+    question: "Цифровой осциллограф позволяет измерять частоту автоматически.", 
+    answers: ["Верно", "Неверно"], 
+    correct: 0,
+    hint: "Встроенные процессоры цифровых осциллографов делают автоматические расчёты"
+  },
+  { 
+    id: 8, 
+    question: "Если осциллограф показывает 3 деления по вертикали при калибровке 0,2 В/дел, чему равна амплитуда сигнала?", 
+    answers: ["0,3 В", "0,6 В", "1,5 В", "2 В"], 
+    correct: 1,
+    hint: "Умножь количество делений на калибровку: 3 × 0,2 В"
+  },
+  { 
+    id: 9, 
+    question: "Перед тобой осциллограмма: синусоида стала \"сплющенной\" сверху. Какое явление ты наблюдаешь?", 
+    answers: ["Интерференция", "Клиппинг (ограничение сигнала)", "Уменьшение частоты", "Ошибка синхронизации"], 
+    correct: 1,
+    hint: "Это происходит, когда сигнал превышает допустимый диапазон усилителя"
+  },
+  { 
+    id: 10, 
+    question: "Что произойдёт, если поменять местами каналы X и Y при подаче двух сигналов одинаковой частоты, но сдвинутых по фазе на 90°?", 
+    answers: ["На экране появится диагональ", "Появится окружность", "Появится синусоида", "Сигнал исчезнет"], 
+    correct: 1,
+    hint: "Два синусоидальных сигнала со сдвигом 90° образуют фигуру Лиссажу в виде круга"
+  }
 ];
 
-const prizeList = [
-  "500 ₽", "1 000 ₽", "2 000 ₽", "3 000 ₽", "5 000 ₽",
-  "10 000 ₽", "15 000 ₽", "25 000 ₽", "50 000 ₽", "100 000 ₽",
-  "200 000 ₽", "400 000 ₽", "800 000 ₽", "1 500 000 ₽", "3 000 000 ₽"
-];
+interface AttemptLog {
+  questionId: number;
+  attempts: number[];
+  usedHint: boolean;
+  correctAnswer: number;
+}
 
 type GameScreen = 'welcome' | 'game' | 'result';
 
@@ -44,18 +105,15 @@ const Index = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
-  const [wonPrize, setWonPrize] = useState("");
   const [email, setEmail] = useState("");
   const [userName, setUserName] = useState("");
   const { toast } = useToast();
 
-  const [lifelines, setLifelines] = useState({
-    fifty: true,
-    phone: true,
-    audience: true
-  });
-
-  const [eliminatedAnswers, setEliminatedAnswers] = useState<number[]>([]);
+  const [totalHints, setTotalHints] = useState(3);
+  const [attemptLogs, setAttemptLogs] = useState<AttemptLog[]>([]);
+  const [currentAttempts, setCurrentAttempts] = useState<number[]>([]);
+  const [usedHintOnCurrent, setUsedHintOnCurrent] = useState(false);
+  const [showHintText, setShowHintText] = useState(false);
 
   const startGame = () => {
     if (!userName.trim()) {
@@ -69,59 +127,17 @@ const Index = () => {
     setScreen('game');
   };
 
-  const useFiftyFifty = () => {
-    if (!lifelines.fifty || isAnswered) return;
+  const useHint = () => {
+    if (totalHints <= 0 || showHintText) return;
     
-    const current = questions[currentQuestion];
-    const wrongAnswers = [0, 1, 2, 3].filter(i => i !== current.correct);
-    const toEliminate = wrongAnswers.slice(0, 2);
-    
-    setEliminatedAnswers(toEliminate);
-    setLifelines({ ...lifelines, fifty: false });
+    setTotalHints(totalHints - 1);
+    setUsedHintOnCurrent(true);
+    setShowHintText(true);
     
     toast({
-      title: "50/50 использована",
-      description: "Два неправильных ответа убраны"
-    });
-  };
-
-  const usePhoneFriend = () => {
-    if (!lifelines.phone || isAnswered) return;
-    
-    const current = questions[currentQuestion];
-    const friendConfidence = Math.random() > 0.3 ? current.correct : Math.floor(Math.random() * 4);
-    
-    setLifelines({ ...lifelines, phone: false });
-    
-    toast({
-      title: "Звонок другу",
-      description: `Друг считает, что правильный ответ: ${current.answers[friendConfidence]}`,
-      duration: 5000
-    });
-  };
-
-  const useAudienceHelp = () => {
-    if (!lifelines.audience || isAnswered) return;
-    
-    const current = questions[currentQuestion];
-    const percentages = [0, 0, 0, 0];
-    percentages[current.correct] = 50 + Math.floor(Math.random() * 30);
-    
-    let remaining = 100 - percentages[current.correct];
-    for (let i = 0; i < 4; i++) {
-      if (i !== current.correct) {
-        const share = i === 3 ? remaining : Math.floor(Math.random() * remaining);
-        percentages[i] = share;
-        remaining -= share;
-      }
-    }
-    
-    setLifelines({ ...lifelines, audience: false });
-    
-    toast({
-      title: "Помощь зала",
-      description: current.answers.map((ans, idx) => `${ans}: ${percentages[idx]}%`).join('\n'),
-      duration: 7000
+      title: "Подсказка",
+      description: questions[currentQuestion].hint,
+      duration: 8000
     });
   };
 
@@ -137,48 +153,98 @@ const Index = () => {
     const current = questions[currentQuestion];
     const isCorrect = selectedAnswer === current.correct;
     
+    const newAttempts = [...currentAttempts, selectedAnswer];
+    setCurrentAttempts(newAttempts);
+    
     setTimeout(() => {
       if (isCorrect) {
+        const log: AttemptLog = {
+          questionId: current.id,
+          attempts: newAttempts,
+          usedHint: usedHintOnCurrent,
+          correctAnswer: current.correct
+        };
+        setAttemptLogs([...attemptLogs, log]);
+        
         if (currentQuestion === questions.length - 1) {
-          setWonPrize(current.prize);
           setScreen('result');
         } else {
           setCurrentQuestion(currentQuestion + 1);
           setSelectedAnswer(null);
           setIsAnswered(false);
-          setEliminatedAnswers([]);
+          setCurrentAttempts([]);
+          setUsedHintOnCurrent(false);
+          setShowHintText(false);
         }
       } else {
-        let finalPrize = "0 ₽";
-        if (currentQuestion >= 10) finalPrize = "100 000 ₽";
-        else if (currentQuestion >= 5) finalPrize = "5 000 ₽";
-        
-        setWonPrize(finalPrize);
-        setScreen('result');
+        toast({
+          title: "Неправильно!",
+          description: "Попробуй ещё раз. Можешь использовать подсказку.",
+          variant: "destructive",
+          duration: 3000
+        });
+        setSelectedAnswer(null);
+        setIsAnswered(false);
       }
     }, 2000);
   };
 
-  const takeTheMoney = () => {
-    const prize = currentQuestion > 0 ? questions[currentQuestion - 1].prize : "0 ₽";
-    setWonPrize(prize);
-    setScreen('result');
-  };
-
   const sendResults = async () => {
-    if (!email.trim()) {
-      toast({
-        title: "Введите email",
-        description: "Пожалуйста, введите email для отправки результатов",
-        variant: "destructive"
-      });
-      return;
-    }
+    const score = attemptLogs.reduce((sum, log) => sum + (log.attempts.length === 1 && !log.usedHint ? 1 : 0), 0);
+    const totalAttempts = attemptLogs.reduce((sum, log) => sum + log.attempts.length, 0);
+    const hintsUsed = 3 - totalHints;
+    
+    const resultsText = `
+Результаты теста по осциллографам
+Имя: ${userName}
+Email: ${email}
 
-    toast({
-      title: "Результаты отправлены!",
-      description: `Ваш выигрыш ${wonPrize} отправлен на ${email}`
-    });
+Правильных ответов с первой попытки: ${score}/${questions.length}
+Всего попыток: ${totalAttempts}
+Использовано подсказок: ${hintsUsed}/3
+
+Детальные результаты:
+${attemptLogs.map((log, idx) => {
+  const q = questions[idx];
+  return `
+Вопрос ${idx + 1}: ${q.question}
+Попытки: ${log.attempts.map(a => q.answers[a]).join(', ')}
+Правильный ответ: ${q.answers[log.correctAnswer]}
+Подсказка использована: ${log.usedHint ? 'Да' : 'Нет'}
+`;
+}).join('\n')}
+    `.trim();
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          access_key: '8f3c7e89-4f5e-4d3a-9b2c-1a7e6d4c8b9f',
+          subject: `Результаты теста: ${userName}`,
+          from_name: 'Квиз Осциллограф',
+          to_email: 'dina-zyskina@rambler.ru',
+          message: resultsText
+        })
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Результаты отправлены!",
+          description: "Твои результаты успешно отправлены преподавателю"
+        });
+      } else {
+        toast({
+          title: "Результаты сохранены",
+          description: `Баллов: ${score}/${questions.length}. Попыток: ${totalAttempts}`,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Тест завершён!",
+        description: `Твой результат: ${score}/${questions.length}`,
+      });
+    }
   };
 
   const restartGame = () => {
@@ -186,10 +252,12 @@ const Index = () => {
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setIsAnswered(false);
-    setWonPrize("");
     setEmail("");
-    setLifelines({ fifty: true, phone: true, audience: true });
-    setEliminatedAnswers([]);
+    setTotalHints(3);
+    setAttemptLogs([]);
+    setCurrentAttempts([]);
+    setUsedHintOnCurrent(false);
+    setShowHintText(false);
   };
 
   if (screen === 'welcome') {
@@ -198,16 +266,19 @@ const Index = () => {
         <Card className="w-full max-w-2xl p-8 md:p-12 bg-gradient-to-br from-[#1a1f3a] to-[#0a0e27] border-2 border-yellow-500/30 shadow-2xl animate-fade-in">
           <div className="text-center space-y-6">
             <div className="space-y-2">
-              <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 animate-shimmer bg-[length:200%_auto]">
-                КТО ХОЧЕТ СТАТЬ
+              <div className="flex justify-center mb-4">
+                <Icon name="Activity" size={80} className="text-yellow-400" />
+              </div>
+              <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
+                КВИЗ ПО ОСЦИЛЛОГРАФАМ
               </h1>
-              <h2 className="text-5xl md:text-7xl font-extrabold text-yellow-400 drop-shadow-[0_0_30px_rgba(251,191,36,0.5)]">
-                МИЛЛИОНЕРОМ?
+              <h2 className="text-2xl md:text-3xl font-bold text-yellow-400">
+                Электронный осциллограф
               </h2>
             </div>
             
             <p className="text-gray-300 text-lg md:text-xl max-w-xl mx-auto">
-              Ответьте на 15 вопросов и выиграйте до 3 000 000 рублей! У вас есть три подсказки и возможность забрать деньги в любой момент.
+              Проверь свои знания об электронных осциллографах! 10 вопросов от простых к сложным. У тебя есть 3 подсказки на всю игру.
             </p>
 
             <div className="space-y-4 max-w-md mx-auto">
@@ -225,22 +296,22 @@ const Index = () => {
                 className="w-full text-xl font-bold bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black shadow-lg hover:shadow-yellow-500/50 transition-all duration-300 animate-pulse-gold"
               >
                 <Icon name="Play" className="mr-2" size={24} />
-                НАЧАТЬ ИГРУ
+                НАЧАТЬ ТЕСТ
               </Button>
             </div>
 
             <div className="flex justify-center gap-8 pt-6 text-yellow-400/80">
               <div className="text-center">
                 <Icon name="CircleHelp" size={32} className="mx-auto mb-2" />
-                <p className="text-sm">15 вопросов</p>
+                <p className="text-sm">10 вопросов</p>
               </div>
               <div className="text-center">
                 <Icon name="Lightbulb" size={32} className="mx-auto mb-2" />
                 <p className="text-sm">3 подсказки</p>
               </div>
               <div className="text-center">
-                <Icon name="Trophy" size={32} className="mx-auto mb-2" />
-                <p className="text-sm">3 млн ₽</p>
+                <Icon name="TrendingUp" size={32} className="mx-auto mb-2" />
+                <p className="text-sm">Растущая сложность</p>
               </div>
             </div>
           </div>
@@ -250,6 +321,9 @@ const Index = () => {
   }
 
   if (screen === 'result') {
+    const score = attemptLogs.reduce((sum, log) => sum + (log.attempts.length === 1 && !log.usedHint ? 1 : 0), 0);
+    const totalAttempts = attemptLogs.reduce((sum, log) => sum + log.attempts.length, 0);
+    
     return (
       <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27]">
         <Card className="w-full max-w-2xl p-8 md:p-12 bg-gradient-to-br from-[#1a1f3a] to-[#0a0e27] border-2 border-yellow-500/30 shadow-2xl animate-fade-in">
@@ -257,21 +331,34 @@ const Index = () => {
             <Icon name="Trophy" size={80} className="mx-auto text-yellow-400" />
             
             <h2 className="text-3xl md:text-5xl font-bold text-yellow-400">
-              Игра окончена, {userName}!
+              Тест завершён, {userName}!
             </h2>
             
-            <div className="p-6 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-lg border border-yellow-500/50">
-              <p className="text-gray-300 text-xl mb-2">Ваш выигрыш:</p>
-              <p className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
-                {wonPrize}
-              </p>
+            <div className="space-y-4">
+              <div className="p-6 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-lg border border-yellow-500/50">
+                <p className="text-gray-300 text-xl mb-2">Правильно с первой попытки:</p>
+                <p className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500">
+                  {score} / {questions.length}
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 bg-[#0a0e27] rounded-lg border border-yellow-500/30">
+                  <p className="text-gray-400 text-sm">Всего попыток</p>
+                  <p className="text-2xl font-bold text-yellow-400">{totalAttempts}</p>
+                </div>
+                <div className="p-4 bg-[#0a0e27] rounded-lg border border-yellow-500/30">
+                  <p className="text-gray-400 text-sm">Использовано подсказок</p>
+                  <p className="text-2xl font-bold text-yellow-400">{3 - totalHints} / 3</p>
+                </div>
+              </div>
             </div>
 
             <div className="space-y-4 max-w-md mx-auto">
-              <p className="text-gray-300">Получите результаты на email:</p>
+              <p className="text-gray-300">Результаты будут отправлены на email преподавателя</p>
               <Input
                 type="email"
-                placeholder="Введите ваш email"
+                placeholder="Введите ваш email (опционально)"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-[#0a0e27] border-yellow-500/50 text-white placeholder:text-gray-500"
@@ -291,7 +378,7 @@ const Index = () => {
               className="w-full max-w-md border-yellow-500/50 text-yellow-400 hover:bg-yellow-500/10"
             >
               <Icon name="RotateCcw" className="mr-2" size={20} />
-              Начать заново
+              Пройти заново
             </Button>
           </div>
         </Card>
@@ -305,147 +392,117 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27] p-4">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-[1fr_300px] gap-6">
-          <div className="space-y-6">
-            <Card className="p-6 bg-gradient-to-br from-[#1a1f3a] to-[#0a0e27] border-2 border-yellow-500/30 animate-fade-in">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-yellow-400 text-black flex items-center justify-center font-bold text-xl">
-                    {currentQuestion + 1}
-                  </div>
-                  <div>
-                    <p className="text-gray-400 text-sm">Вопрос {currentQuestion + 1} из 15</p>
-                    <p className="text-yellow-400 font-bold text-xl">{current.prize}</p>
-                  </div>
+      <div className="max-w-4xl mx-auto">
+        <div className="space-y-6">
+          <Card className="p-6 bg-gradient-to-br from-[#1a1f3a] to-[#0a0e27] border-2 border-yellow-500/30 animate-fade-in">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full bg-yellow-400 text-black flex items-center justify-center font-bold text-xl">
+                  {currentQuestion + 1}
                 </div>
-                
+                <div>
+                  <p className="text-gray-400 text-sm">Вопрос {currentQuestion + 1} из {questions.length}</p>
+                  {currentAttempts.length > 0 && (
+                    <p className="text-orange-400 text-sm">Попыток: {currentAttempts.length + 1}</p>
+                  )}
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-3">
+                <div className="text-right">
+                  <p className="text-gray-400 text-sm">Подсказок осталось</p>
+                  <p className="text-yellow-400 font-bold text-xl">{totalHints}</p>
+                </div>
                 <Button
-                  onClick={takeTheMoney}
-                  variant="outline"
-                  disabled={isAnswered || currentQuestion === 0}
-                  className="border-orange-500/50 text-orange-400 hover:bg-orange-500/10"
+                  onClick={useHint}
+                  disabled={totalHints === 0 || showHintText}
+                  className="bg-blue-600 hover:bg-blue-700 disabled:opacity-30 disabled:bg-gray-700"
                 >
-                  <Icon name="HandCoins" className="mr-2" size={20} />
-                  Забрать деньги
+                  <Icon name="Lightbulb" className="mr-2" size={20} />
+                  Подсказка
                 </Button>
               </div>
+            </div>
 
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-8 leading-relaxed">
-                {current.question}
-              </h3>
-
-              <div className="grid md:grid-cols-2 gap-4">
-                {current.answers.map((answer, index) => {
-                  const isEliminated = eliminatedAnswers.includes(index);
-                  const isSelected = selectedAnswer === index;
-                  const showCorrect = isAnswered && index === current.correct;
-                  const showWrong = isAnswered && isSelected && index !== current.correct;
-                  
-                  return (
-                    <Button
-                      key={index}
-                      onClick={() => selectAnswer(index)}
-                      disabled={isAnswered || isEliminated}
-                      className={`h-auto py-6 px-6 text-lg font-semibold transition-all duration-300 ${
-                        isEliminated 
-                          ? 'opacity-20 cursor-not-allowed bg-gray-800' 
-                          : showCorrect
-                          ? 'bg-green-600 hover:bg-green-600 border-green-400 text-white animate-pulse-gold'
-                          : showWrong
-                          ? 'bg-red-600 hover:bg-red-600 border-red-400 text-white'
-                          : isSelected
-                          ? 'bg-yellow-500 hover:bg-yellow-500 text-black border-yellow-400'
-                          : 'bg-[#0a0e27] hover:bg-yellow-500/20 border-yellow-500/50 text-white'
-                      } border-2`}
-                    >
-                      <div className="flex items-center gap-3 w-full">
-                        <span className="w-8 h-8 rounded-full bg-yellow-400 text-black flex items-center justify-center font-bold flex-shrink-0">
-                          {String.fromCharCode(65 + index)}
-                        </span>
-                        <span className="text-left flex-1">{answer}</span>
-                        {showCorrect && <Icon name="Check" size={24} />}
-                        {showWrong && <Icon name="X" size={24} />}
-                      </div>
-                    </Button>
-                  );
-                })}
+            {showHintText && (
+              <div className="mb-6 p-4 bg-blue-600/20 border border-blue-500/50 rounded-lg animate-fade-in">
+                <div className="flex items-start gap-3">
+                  <Icon name="Lightbulb" className="text-blue-400 flex-shrink-0 mt-1" size={24} />
+                  <p className="text-blue-200">{current.hint}</p>
+                </div>
               </div>
+            )}
 
-              <div className="mt-6 flex justify-center">
-                <Button
-                  onClick={confirmAnswer}
-                  disabled={selectedAnswer === null || isAnswered}
-                  size="lg"
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold text-xl px-12 disabled:opacity-50"
-                >
-                  Ответить окончательно
-                </Button>
-              </div>
-            </Card>
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-8 leading-relaxed">
+              {current.question}
+            </h3>
 
-            <Card className="p-6 bg-gradient-to-br from-[#1a1f3a] to-[#0a0e27] border-2 border-yellow-500/30">
-              <h4 className="text-yellow-400 font-bold mb-4 flex items-center gap-2">
-                <Icon name="Lightbulb" size={24} />
-                Подсказки
-              </h4>
-              <div className="flex gap-4 flex-wrap">
-                <Button
-                  onClick={useFiftyFifty}
-                  disabled={!lifelines.fifty || isAnswered}
-                  className="flex-1 min-w-[150px] bg-blue-600 hover:bg-blue-700 disabled:opacity-30 disabled:bg-gray-700 text-white"
-                >
-                  <Icon name="Scissors" className="mr-2" size={20} />
-                  50/50
-                </Button>
-                <Button
-                  onClick={usePhoneFriend}
-                  disabled={!lifelines.phone || isAnswered}
-                  className="flex-1 min-w-[150px] bg-green-600 hover:bg-green-700 disabled:opacity-30 disabled:bg-gray-700 text-white"
-                >
-                  <Icon name="Phone" className="mr-2" size={20} />
-                  Звонок другу
-                </Button>
-                <Button
-                  onClick={useAudienceHelp}
-                  disabled={!lifelines.audience || isAnswered}
-                  className="flex-1 min-w-[150px] bg-purple-600 hover:bg-purple-700 disabled:opacity-30 disabled:bg-gray-700 text-white"
-                >
-                  <Icon name="Users" className="mr-2" size={20} />
-                  Помощь зала
-                </Button>
-              </div>
-            </Card>
-          </div>
-
-          <Card className="p-6 bg-gradient-to-br from-[#1a1f3a] to-[#0a0e27] border-2 border-yellow-500/30 h-fit lg:sticky lg:top-4">
-            <h4 className="text-yellow-400 font-bold mb-4 flex items-center gap-2">
-              <Icon name="TrendingUp" size={24} />
-              Призовая лестница
-            </h4>
-            <div className="space-y-2">
-              {prizeList.map((prize, index) => {
-                const isFireproof = index === 4 || index === 9;
-                const isCurrent = index === currentQuestion;
-                const isPassed = index < currentQuestion;
+            <div className="grid gap-4">
+              {current.answers.map((answer, index) => {
+                const isSelected = selectedAnswer === index;
+                const showCorrect = isAnswered && index === current.correct;
+                const showWrong = isAnswered && isSelected && index !== current.correct;
                 
                 return (
-                  <div
+                  <Button
                     key={index}
-                    className={`p-3 rounded-lg flex items-center justify-between transition-all ${
-                      isCurrent
-                        ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black font-bold scale-105 shadow-lg'
-                        : isPassed
-                        ? 'bg-green-600/30 text-green-400'
-                        : 'bg-[#0a0e27] text-gray-400'
-                    } ${isFireproof ? 'border-2 border-orange-500' : ''}`}
+                    onClick={() => selectAnswer(index)}
+                    disabled={isAnswered}
+                    className={`h-auto py-6 px-6 text-lg font-semibold transition-all duration-300 ${
+                      showCorrect
+                        ? 'bg-green-600 hover:bg-green-600 border-green-400 text-white animate-pulse-gold'
+                        : showWrong
+                        ? 'bg-red-600 hover:bg-red-600 border-red-400 text-white'
+                        : isSelected
+                        ? 'bg-yellow-500 hover:bg-yellow-500 text-black border-yellow-400'
+                        : 'bg-[#0a0e27] hover:bg-yellow-500/20 border-yellow-500/50 text-white'
+                    } border-2`}
                   >
-                    <span className="font-mono">{15 - index}.</span>
-                    <span className="font-bold">{prizeList[14 - index]}</span>
-                    {isFireproof && <Icon name="Flame" size={16} className="text-orange-500" />}
-                  </div>
+                    <div className="flex items-center gap-3 w-full">
+                      <span className="w-8 h-8 rounded-full bg-yellow-400 text-black flex items-center justify-center font-bold flex-shrink-0">
+                        {String.fromCharCode(65 + index)}
+                      </span>
+                      <span className="text-left flex-1">{answer}</span>
+                      {showCorrect && <Icon name="Check" size={24} />}
+                      {showWrong && <Icon name="X" size={24} />}
+                    </div>
+                  </Button>
                 );
               })}
+            </div>
+
+            <div className="mt-6 flex justify-center">
+              <Button
+                onClick={confirmAnswer}
+                disabled={selectedAnswer === null || isAnswered}
+                size="lg"
+                className="bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold text-xl px-12 disabled:opacity-50"
+              >
+                Ответить
+              </Button>
+            </div>
+          </Card>
+
+          <Card className="p-6 bg-gradient-to-br from-[#1a1f3a] to-[#0a0e27] border-2 border-yellow-500/30">
+            <h4 className="text-yellow-400 font-bold mb-4 flex items-center gap-2">
+              <Icon name="ListChecks" size={24} />
+              Прогресс
+            </h4>
+            <div className="flex gap-2 flex-wrap">
+              {questions.map((_, index) => (
+                <div
+                  key={index}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
+                    index < currentQuestion
+                      ? 'bg-green-600 text-white'
+                      : index === currentQuestion
+                      ? 'bg-yellow-400 text-black animate-pulse-gold'
+                      : 'bg-[#0a0e27] text-gray-500'
+                  }`}
+                >
+                  {index + 1}
+                </div>
+              ))}
             </div>
           </Card>
         </div>
