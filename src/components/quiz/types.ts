@@ -4,6 +4,12 @@ export interface Question {
   answers: string[];
   correct: number;
   hint?: string;
+  type?: 'standard' | 'matching';
+  matchingPairs?: {
+    elements: string[];
+    functions: string[];
+    correctOrder: number[];
+  };
 }
 
 export interface AttemptLog {

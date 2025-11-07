@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import WelcomeScreen from '@/components/quiz/WelcomeScreen';
 import QuestionCard from '@/components/quiz/QuestionCard';
+import MatchingQuestion from '@/components/quiz/MatchingQuestion';
 import ResultScreen from '@/components/quiz/ResultScreen';
 import ProgressCard from '@/components/quiz/ProgressCard';
 import { questions } from '@/components/quiz/questions';
@@ -156,6 +157,50 @@ ${attemptLogs.map((log, idx) => {
     }, 2000);
   };
 
+  const confirmMatchingAnswer = (isCorrect: boolean, selectedOrder: number[]) => {
+    setIsAnswered(true);
+    const current = questions[currentQuestion];
+    
+    const newAttempts = [...currentAttempts, ...selectedOrder];
+    setCurrentAttempts(newAttempts);
+    
+    setTimeout(() => {
+      if (isCorrect) {
+        playSound('correct');
+        const log: AttemptLog = {
+          questionId: current.id,
+          attempts: newAttempts,
+          usedHint: usedHintOnCurrent,
+          correctAnswer: 0
+        };
+        setAttemptLogs([...attemptLogs, log]);
+        
+        if (currentQuestion === questions.length - 1) {
+          setScreen('result');
+        } else {
+          setTimeout(() => {
+            playSound('next');
+            setCurrentQuestion(currentQuestion + 1);
+            setSelectedAnswer(null);
+            setIsAnswered(false);
+            setCurrentAttempts([]);
+            setUsedHintOnCurrent(false);
+            setShowHintText(false);
+          }, 1000);
+        }
+      } else {
+        playSound('wrong');
+        toast({
+          title: "Неправильно!",
+          description: "Попробуй ещё раз. Можешь использовать подсказку.",
+          variant: "destructive",
+          duration: 3000
+        });
+        setIsAnswered(false);
+      }
+    }, 2000);
+  };
+
   const restartGame = () => {
     setScreen('welcome');
     setCurrentQuestion(0);
@@ -202,23 +247,40 @@ ${attemptLogs.map((log, idx) => {
     );
   }
 
+  const currentQ = questions[currentQuestion];
+  const isMatching = currentQ.type === 'matching';
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27] p-4">
       <div className="max-w-4xl mx-auto">
         <div className="space-y-6">
-          <QuestionCard
-            question={questions[currentQuestion]}
-            currentQuestionIndex={currentQuestion}
-            totalQuestions={questions.length}
-            currentAttempts={currentAttempts}
-            totalHints={totalHints}
-            showHintText={showHintText}
-            selectedAnswer={selectedAnswer}
-            isAnswered={isAnswered}
-            onSelectAnswer={selectAnswer}
-            onConfirmAnswer={confirmAnswer}
-            onUseHint={useHint}
-          />
+          {isMatching ? (
+            <MatchingQuestion
+              question={currentQ}
+              currentQuestionIndex={currentQuestion}
+              totalQuestions={questions.length}
+              currentAttempts={currentAttempts}
+              totalHints={totalHints}
+              showHintText={showHintText}
+              isAnswered={isAnswered}
+              onConfirm={confirmMatchingAnswer}
+              onUseHint={useHint}
+            />
+          ) : (
+            <QuestionCard
+              question={currentQ}
+              currentQuestionIndex={currentQuestion}
+              totalQuestions={questions.length}
+              currentAttempts={currentAttempts}
+              totalHints={totalHints}
+              showHintText={showHintText}
+              selectedAnswer={selectedAnswer}
+              isAnswered={isAnswered}
+              onSelectAnswer={selectAnswer}
+              onConfirmAnswer={confirmAnswer}
+              onUseHint={useHint}
+            />
+          )}
           
           <ProgressCard 
             questions={questions}
