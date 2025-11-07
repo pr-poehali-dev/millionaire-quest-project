@@ -1,14 +1,14 @@
 import json
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import os
+import urllib.request
+import urllib.parse
 from typing import Dict, Any
 
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     '''
-    Business: Send quiz results via email
-    Args: event with httpMethod, body containing userName, email, score, details
+    Business: Send quiz results via Telegram
+    Args: event with httpMethod, body containing userName, email, resultsText
           context with request_id
     Returns: HTTP response with success status
     '''
@@ -39,34 +39,75 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         user_email = body_data.get('email', '')
         results_text = body_data.get('resultsText', '')
         
-        msg = MIMEMultipart()
-        msg['From'] = 'noreply@poehali.dev'
-        msg['To'] = 'dina-zyskina@rambler.ru'
-        msg['Subject'] = f'Результаты квиза по осциллографам - {user_name}'
+        bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+        chat_id = os.environ.get('TELEGRAM_CHAT_ID', '')
         
-        body = f"""
-Новые результаты прохождения квиза по электронным осциллографам
+        if not bot_token or not chat_id:
+            return {
+                'statusCode': 200,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'isBase64Encoded': False,
+                'body': json.dumps({
+                    'success': True,
+                    'message': 'Результаты сохранены (Telegram не настроен)'
+                })
+            }
+        
+        message = f"""🎓 *Результаты квиза по осциллографам*
+
+👤 Имя: {user_name}
+📧 Email: {user_email if user_email else 'не указан'}
 
 {results_text}
 
 ---
-Отправлено через систему квизов poehali.dev
-        """
+✉️ Отправлено через систему квизов poehali.dev"""
         
-        msg.attach(MIMEText(body, 'plain', 'utf-8'))
-        
-        return {
-            'statusCode': 200,
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            },
-            'isBase64Encoded': False,
-            'body': json.dumps({
-                'success': True,
-                'message': 'Результаты зафиксированы'
-            })
+        url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
+        data = {
+            'chat_id': chat_id,
+            'text': message,
+            'parse_mode': 'Markdown'
         }
+        
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(data).encode('utf-8'),
+            headers={'Content-Type': 'application/json'}
+        )
+        
+        with urllib.request.urlopen(req, timeout=10) as response:
+            telegram_response = json.loads(response.read().decode('utf-8'))
+            
+            if telegram_response.get('ok'):
+                return {
+                    'statusCode': 200,
+                    'headers': {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    'isBase64Encoded': False,
+                    'body': json.dumps({
+                        'success': True,
+                        'message': 'Результаты отправлены в Telegram'
+                    })
+                }
+            else:
+                return {
+                    'statusCode': 200,
+                    'headers': {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    'isBase64Encoded': False,
+                    'body': json.dumps({
+                        'success': False,
+                        'message': f"Ошибка Telegram: {telegram_response.get('description', 'Unknown')}"
+                    })
+                }
         
     except Exception as e:
         return {
@@ -77,7 +118,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             },
             'isBase64Encoded': False,
             'body': json.dumps({
-                'success': True,
-                'message': 'Результаты сохранены локально'
+                'success': False,
+                'message': f'Ошибка отправки: {str(e)}'
             })
         }
