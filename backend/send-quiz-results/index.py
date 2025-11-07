@@ -39,10 +39,16 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         user_email = body_data.get('email', '')
         results_text = body_data.get('resultsText', '')
         
+        print(f'[DEBUG] Received data for user: {user_name}')
+        
         bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
         chat_id = os.environ.get('TELEGRAM_CHAT_ID', '')
         
+        print(f'[DEBUG] Bot token exists: {bool(bot_token)}')
+        print(f'[DEBUG] Chat ID exists: {bool(chat_id)}')
+        
         if not bot_token or not chat_id:
+            print('[WARNING] Telegram not configured - missing token or chat_id')
             return {
                 'statusCode': 200,
                 'headers': {
@@ -156,6 +162,9 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'parse_mode': 'Markdown'
         }
         
+        print(f'[DEBUG] Sending to Telegram chat_id: {chat_id}')
+        print(f'[DEBUG] Message length: {len(message)} chars')
+        
         req = urllib.request.Request(
             url,
             data=json.dumps(data).encode('utf-8'),
@@ -164,6 +173,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         
         with urllib.request.urlopen(req, timeout=10) as response:
             telegram_response = json.loads(response.read().decode('utf-8'))
+            
+            print(f'[DEBUG] Telegram response: {telegram_response}')
             
             if telegram_response.get('ok'):
                 return {
@@ -179,6 +190,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                     })
                 }
             else:
+                print(f'[ERROR] Telegram API error: {telegram_response}')
                 return {
                     'statusCode': 200,
                     'headers': {
@@ -193,6 +205,7 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
                 }
         
     except Exception as e:
+        print(f'[ERROR] Exception: {str(e)}')
         return {
             'statusCode': 200,
             'headers': {
