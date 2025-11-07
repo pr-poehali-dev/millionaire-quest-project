@@ -29,6 +29,7 @@ const Index = () => {
   const [showHintText, setShowHintText] = useState(false);
   const [hasSentResults, setHasSentResults] = useState(false);
   const [currentMoney, setCurrentMoney] = useState(0);
+  const [hadWrongAnswerOnCurrent, setHadWrongAnswerOnCurrent] = useState(false);
 
   const sendResultsToEmail = async () => {
     if (hasSentResults || attemptLogs.length === 0) return;
@@ -150,16 +151,24 @@ ${attemptLogs.map((log, idx) => {
             setCurrentAttempts([]);
             setUsedHintOnCurrent(false);
             setShowHintText(false);
+            setHadWrongAnswerOnCurrent(false);
           }, 1000);
         }
       } else {
         playSound('wrong');
         
-        const lastFireproof = FIREPROOF_LEVELS.filter(level => level < currentQuestion).pop();
-        if (lastFireproof !== undefined) {
-          setCurrentMoney(MONEY_LADDER[lastFireproof]);
-        } else {
-          setCurrentMoney(0);
+        if (!hadWrongAnswerOnCurrent) {
+          setHadWrongAnswerOnCurrent(true);
+          
+          const lastFireproof = FIREPROOF_LEVELS.filter(level => level <= currentQuestion).pop();
+          if (lastFireproof !== undefined) {
+            const fireproofMoney = MONEY_LADDER[lastFireproof];
+            setCurrentMoney(fireproofMoney);
+            console.log(`Неправильный ответ на вопросе ${currentQuestion + 1}. Откат к несгораемой: ${fireproofMoney}`);
+          } else {
+            setCurrentMoney(0);
+            console.log(`Неправильный ответ на вопросе ${currentQuestion + 1}. Откат к 0`);
+          }
         }
         
         toast({
@@ -207,16 +216,24 @@ ${attemptLogs.map((log, idx) => {
             setCurrentAttempts([]);
             setUsedHintOnCurrent(false);
             setShowHintText(false);
+            setHadWrongAnswerOnCurrent(false);
           }, 1000);
         }
       } else {
         playSound('wrong');
         
-        const lastFireproof = FIREPROOF_LEVELS.filter(level => level < currentQuestion).pop();
-        if (lastFireproof !== undefined) {
-          setCurrentMoney(MONEY_LADDER[lastFireproof]);
-        } else {
-          setCurrentMoney(0);
+        if (!hadWrongAnswerOnCurrent) {
+          setHadWrongAnswerOnCurrent(true);
+          
+          const lastFireproof = FIREPROOF_LEVELS.filter(level => level <= currentQuestion).pop();
+          if (lastFireproof !== undefined) {
+            const fireproofMoney = MONEY_LADDER[lastFireproof];
+            setCurrentMoney(fireproofMoney);
+            console.log(`Неправильный ответ на matching вопросе ${currentQuestion + 1}. Откат к несгораемой: ${fireproofMoney}`);
+          } else {
+            setCurrentMoney(0);
+            console.log(`Неправильный ответ на matching вопросе ${currentQuestion + 1}. Откат к 0`);
+          }
         }
         
         toast({
@@ -243,6 +260,7 @@ ${attemptLogs.map((log, idx) => {
     setShowHintText(false);
     setHasSentResults(false);
     setCurrentMoney(0);
+    setHadWrongAnswerOnCurrent(false);
   };
 
   const handleSendResults = () => {
