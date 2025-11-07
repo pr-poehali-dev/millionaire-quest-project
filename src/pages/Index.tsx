@@ -372,12 +372,6 @@ ${attemptLogs.map((log, idx) => {
     );
   }
 
-  useEffect(() => {
-    if (screen === 'result' && attemptLogs.length > 0) {
-      sendResults();
-    }
-  }, [screen]);
-
   if (screen === 'result') {
     const score = attemptLogs.reduce((sum, log) => sum + (log.attempts.length === 1 && !log.usedHint ? 1 : 0), 0);
     const totalAttempts = attemptLogs.reduce((sum, log) => sum + log.attempts.length, 0);
