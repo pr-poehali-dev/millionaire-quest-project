@@ -41,8 +41,8 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         
         print(f'[DEBUG] Received data for user: {user_name}')
         
-        bot_token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
-        chat_id = os.environ.get('TELEGRAM_CHAT_ID', '')
+        bot_token = os.environ.get('QUIZ_TG_BOT_TOKEN', '')
+        chat_id = os.environ.get('QUIZ_TG_CHAT_ID', '')
         
         print(f'[DEBUG] Bot token exists: {bool(bot_token)}')
         print(f'[DEBUG] Chat ID exists: {bool(chat_id)}')
