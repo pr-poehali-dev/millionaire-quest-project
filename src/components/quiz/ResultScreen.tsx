@@ -72,7 +72,7 @@ const ResultScreen = ({
               className="w-full bg-gradient-to-r from-yellow-400 to-orange-500 hover:from-yellow-500 hover:to-orange-600 text-black font-bold"
             >
               <Icon name="Send" className="mr-2" size={20} />
-              Отправить результаты
+              Результаты отправлены ✓
             </Button>
           </div>
 

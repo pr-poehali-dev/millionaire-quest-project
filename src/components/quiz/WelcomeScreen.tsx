@@ -27,7 +27,7 @@ const WelcomeScreen = ({ userName, setUserName, onStart }: WelcomeScreenProps) =
           </div>
           
           <p className="text-gray-300 text-lg md:text-xl max-w-xl mx-auto">
-            Проверь свои знания об электронных осциллографах! 10 вопросов от простых к сложным. У тебя есть 3 подсказки на всю игру.
+            Проверь свои знания об электронных осциллографах! 11 вопросов от простых к сложным. У тебя есть 3 подсказки на всю игру.
           </p>
 
           <div className="space-y-4 max-w-md mx-auto">
@@ -52,7 +52,7 @@ const WelcomeScreen = ({ userName, setUserName, onStart }: WelcomeScreenProps) =
           <div className="flex justify-center gap-8 pt-6 text-yellow-400/80">
             <div className="text-center">
               <Icon name="CircleHelp" size={32} className="mx-auto mb-2" />
-              <p className="text-sm">10 вопросов</p>
+              <p className="text-sm">11 вопросов</p>
             </div>
             <div className="text-center">
               <Icon name="Lightbulb" size={32} className="mx-auto mb-2" />
