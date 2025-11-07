@@ -13,6 +13,7 @@ interface ResultScreenProps {
   onSendResults: () => void;
   onRestart: () => void;
   totalQuestions: number;
+  currentMoney: number;
 }
 
 const ResultScreen = ({ 
@@ -23,7 +24,8 @@ const ResultScreen = ({
   setEmail, 
   onSendResults, 
   onRestart,
-  totalQuestions 
+  totalQuestions,
+  currentMoney
 }: ResultScreenProps) => {
   const score = attemptLogs.reduce((sum, log) => sum + (log.attempts.length === 1 && !log.usedHint ? 1 : 0), 0);
   const totalAttempts = attemptLogs.reduce((sum, log) => sum + log.attempts.length, 0);
@@ -37,6 +39,13 @@ const ResultScreen = ({
           <h2 className="text-3xl md:text-5xl font-bold text-yellow-400">
             Тест завершён, {userName}!
           </h2>
+          
+          <div className="p-6 bg-gradient-to-r from-green-600/30 to-emerald-600/30 rounded-lg border-2 border-green-500">
+            <p className="text-gray-300 text-lg mb-2">Ваш выигрыш:</p>
+            <p className="text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-400">
+              {currentMoney.toLocaleString('ru-RU')} ₽
+            </p>
+          </div>
           
           <div className="space-y-4">
             <div className="p-6 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-lg border border-yellow-500/50">
